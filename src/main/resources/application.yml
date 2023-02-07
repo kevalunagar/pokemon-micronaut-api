@@ -1,0 +1,19 @@
+micronaut:
+  application:
+    name: testApi
+datasources:
+  default:
+    driver-class-name: org.mariadb.jdbc.Driver
+    db-type: mariadb
+    dialect: MYSQL
+    jdbc-url: jdbc:mariadb://localhost:3306/pokemon
+    username: pokemon-db-user
+    password: 123456
+liquibase:
+  datasources:
+    default:
+      change-log: classpath:db/liquibase-changelog.yml
+netty:
+  default:
+    allocator:
+      max-order: 3
