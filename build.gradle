@@ -2,6 +2,7 @@
 plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.micronaut.application") version "3.7.0"
+    id("jacoco")
 //    id("io.micronaut.test-resources") version "3.7.0"
 }
 
@@ -28,6 +29,7 @@ dependencies {
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
     testImplementation 'org.mockito:mockito-testng:0.4.30'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
 }
 
 
@@ -35,8 +37,8 @@ application {
     mainClass.set("com.testapi.Application")
 }
 java {
-    sourceCompatibility = JavaVersion.toVersion("11")
-    targetCompatibility = JavaVersion.toVersion("11")
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }
 
 graalvmNative.toolchainDetection = false
@@ -49,5 +51,11 @@ micronaut {
     }
 }
 
+jacocoTestReport {
+    dependsOn(test)
+    reports {
+        xml.required = true
+    }
+}
 
 
