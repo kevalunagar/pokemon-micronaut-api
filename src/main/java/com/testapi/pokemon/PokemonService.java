@@ -12,7 +12,8 @@ import java.util.Optional;
 public class PokemonService {
 
   private final PokemonRepository pokemonRepository;
-private final PowerService powerService;
+  private final PowerService powerService;
+
   public PokemonService(PokemonRepository pokemonRepository, PowerService powerService) {
     this.pokemonRepository = pokemonRepository;
     this.powerService = powerService;
@@ -32,12 +33,11 @@ private final PowerService powerService;
     newPokemon.setName(pokemon.getName());
     newPokemon.setPower(power);
     return pokemonRepository.save(newPokemon);
-
   }
 
   public Pokemon update(PokemonUpdateForm pokemon, Integer id) {
     Optional<Pokemon> byName = pokemonRepository.findByName(pokemon.getName());
-    if(byName.isPresent()){
+    if (byName.isPresent()) {
       Power power = powerService.get(pokemon.getPower());
       Pokemon updatePokemon = new Pokemon();
       updatePokemon.setPower(power);
@@ -45,8 +45,7 @@ private final PowerService powerService;
       updatePokemon.setImageUrl(pokemon.getImageUrl());
       updatePokemon.setId(id);
       return pokemonRepository.update(updatePokemon);
-    }
-    else throw new InvalidDataException("Id Doesn't Exists");
+    } else throw new InvalidDataException("Id Doesn't Exists");
   }
 
   public Pokemon getById(Integer id) {

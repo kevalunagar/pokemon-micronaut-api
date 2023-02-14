@@ -27,7 +27,7 @@ public class PokemonController {
 
   @Post
   public HttpResponse<Pokemon> create(@Body PokemonCreationForm pokemon) {
-      return HttpResponse.created(pokemonService.create(pokemon));
+    return HttpResponse.created(pokemonService.create(pokemon));
   }
 
   @Put("/{id}")
@@ -36,11 +36,11 @@ public class PokemonController {
   }
 
   @Delete("/{id}")
-  public HttpResponse<String> deleteById(@PathVariable Integer id){
-    try{
+  public HttpResponse<String> deleteById(@PathVariable Integer id) {
+    try {
       pokemonService.deleteById(id);
       return HttpResponse.ok("Deleted");
-    }catch (InvalidDataException e){
+    } catch (InvalidDataException e) {
       return HttpResponse.badRequest(e.getMessage());
     }
   }
