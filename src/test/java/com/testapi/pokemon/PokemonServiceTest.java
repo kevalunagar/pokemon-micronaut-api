@@ -5,6 +5,7 @@ import com.testapi.power.Power;
 import com.testapi.power.PowerService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -25,13 +26,14 @@ public class PokemonServiceTest {
     pokemonRepository = Mockito.mock(PokemonRepository.class);
     powerService = Mockito.mock(PowerService.class);
     pokemonService = new PokemonService(pokemonRepository, powerService);
-    pikachu = new Pokemon(2, "Pikachu", new Power(5, "Fire"), null);
-    paras = new Pokemon(3, "Paras", new Power(5, "Fire"), null);
-    bulbasaur = new Pokemon(4, "Bulbasaur", new Power(4, "Grass"), null);
-    ditto = new Pokemon(5, "Ditto", new Power(5, "Fire"), null);
+    pikachu = new Pokemon(1, "Pikachu", new Power(2, "Fire"), null);
+    paras = new Pokemon(2, "Paras", new Power(2, "Fire"), null);
+    bulbasaur = new Pokemon(3, "Bulbasaur", new Power(1,  "Grass"), null);
+    ditto = new Pokemon(4, "Ditto", new Power(2, "Fire"), null);
   }
 
   @Test
+  @DisplayName("Should return list of pokemon")
   void testGetPokemon() {
     Mockito.when(pokemonRepository.findAll()).thenReturn(List.of(pikachu, paras, bulbasaur, ditto));
     List<Pokemon> pokemonList = pokemonService.get();
@@ -41,8 +43,9 @@ public class PokemonServiceTest {
   }
 
   @Test
+  @DisplayName("Should return exception if name exists")
   void testFindByNameThatExists() {
-    pokemonToCreate = new PokemonCreationForm("Pikachu", 5);
+    pokemonToCreate = new PokemonCreationForm("Pikachu", 2);
     Mockito.when(pokemonRepository.findByName(pokemonToCreate.getName()))
         .thenReturn(Optional.ofNullable(pikachu));
     Assertions.assertThatThrownBy(() -> pokemonService.create(pokemonToCreate))
@@ -50,9 +53,10 @@ public class PokemonServiceTest {
   }
 
   @Test
+  @DisplayName("Should return power")
   void testGetPower() {
-    pokemonToCreate = new PokemonCreationForm("Pikachu", 5);
-    Power generatedPower = new Power(5, "Fire");
+    pokemonToCreate = new PokemonCreationForm("Pikachu", 2);
+    Power generatedPower = new Power(2, "Fire");
     Mockito.when(powerService.get(pokemonToCreate.getPower())).thenReturn(generatedPower);
     Power power = powerService.get(pokemonToCreate.getPower());
     Mockito.verify(powerService).get(pokemonToCreate.getPower());
@@ -60,9 +64,10 @@ public class PokemonServiceTest {
   }
 
   @Test
+  @DisplayName("Should create pokemon")
   void testCreatePokemon() {
-    pokemonToCreate = new PokemonCreationForm("Charmeleon", 5);
-    Power power = new Power(5, "Fire");
+    pokemonToCreate = new PokemonCreationForm("Charmeleon", 2);
+    Power power = new Power(2, "Fire");
     Pokemon expectedPokemon = new Pokemon(7, "Charmeleon", power, null);
     Mockito.when(pokemonRepository.findByName(pokemonToCreate.getName()))
         .thenReturn(Optional.ofNullable(null));
@@ -78,8 +83,9 @@ public class PokemonServiceTest {
   }
 
   @Test
+  @DisplayName("Should not allow to update if name doesn't exists")
   void testUpdateNameNotExists() {
-    pokemonToUpdate = new PokemonUpdateForm("abc", 5, null);
+    pokemonToUpdate = new PokemonUpdateForm("abc", 2, null);
     Mockito.when(pokemonRepository.findByName(pokemonToUpdate.getName()))
         .thenReturn(Optional.ofNullable(null));
     Assertions.assertThatThrownBy(() -> pokemonService.update(pokemonToUpdate, 10))
@@ -87,9 +93,10 @@ public class PokemonServiceTest {
   }
 
   @Test
+  @DisplayName("Should update pokemon")
   void testUpdatePokemon() {
-    pokemonToUpdate = new PokemonUpdateForm("Pikachu", 4, null);
-    Power power = new Power(4, "Grass");
+    pokemonToUpdate = new PokemonUpdateForm("Pikachu", 1, null);
+    Power power = new Power(1, "Grass");
     Pokemon expectedPokemon = new Pokemon(2, "Pikachu", power, null);
     Mockito.when(pokemonRepository.findByName(pokemonToUpdate.getName()))
         .thenReturn(Optional.ofNullable(pikachu));
@@ -105,6 +112,7 @@ public class PokemonServiceTest {
   }
 
   @Test
+  @DisplayName("Should return pokemon for given id")
   void testGetById() {
     Mockito.when(pokemonRepository.findById(2)).thenReturn(Optional.ofNullable(pikachu));
     Pokemon pokemon = pokemonService.getById(2);
@@ -113,6 +121,7 @@ public class PokemonServiceTest {
   }
 
   @Test
+  @DisplayName("Should throw exception if id doesn't exists")
   void testGetByIdException() {
     Mockito.when(pokemonRepository.findById(8)).thenReturn(Optional.ofNullable(null));
     Assertions.assertThatThrownBy(() -> pokemonService.getById(8))
@@ -120,6 +129,7 @@ public class PokemonServiceTest {
   }
 
   @Test
+  @DisplayName("Should Delete the pokemon for given id")
   void testDeleteById() {
     Mockito.when(pokemonRepository.existsById(5)).thenReturn(true);
     pokemonService.deleteById(5);
@@ -128,6 +138,7 @@ public class PokemonServiceTest {
   }
 
   @Test
+  @DisplayName("Should throw exception if id doesn't exists")
   void testDeleteByIdException() {
     Mockito.when(pokemonRepository.existsById(8)).thenReturn(false);
     Assertions.assertThatThrownBy(() -> pokemonService.deleteById(8))

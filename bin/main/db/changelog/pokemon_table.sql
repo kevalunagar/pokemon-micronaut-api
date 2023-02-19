@@ -13,16 +13,16 @@ DEFAULT CHARSET=latin1
 COLLATE=latin1_swedish_ci;
 
 --changeset keval:pokemon-table-power-col-added
-ALTER TABLE pokemon ADD power varchar(100) NULL;
+ALTER TABLE pokemon.pokemon ADD power varchar(100) NULL;
 
 --changeset keval:pokemon-table-image-url-changed
-ALTER TABLE pokemon MODIFY COLUMN image_url varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;
+ALTER TABLE pokemon.pokemon MODIFY COLUMN image_url varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;
 
 --changeset keval:pokemon-table-imageUrl-col-changed
-ALTER TABLE pokemon CHANGE image_url imageUrl varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL NULL;
+ALTER TABLE pokemon.pokemon CHANGE image_url imageUrl varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL NULL;
 
 --changeset keval:power-table-added
-CREATE TABLE power (
+CREATE TABLE pokemon.power (
 	powerId INT auto_increment NOT NULL,
 	name varchar(100) NOT NULL,
 	CONSTRAINT power_pk PRIMARY KEY (powerId),
@@ -33,7 +33,7 @@ DEFAULT CHARSET=latin1
 COLLATE=latin1_swedish_ci;
 
 --changeset keval:power-table-data-added
-INSERT INTO power (name)
+INSERT INTO pokemon.power (name)
 	VALUES ('Grass'), ('Fire'), ('Water');
 
 --changeset keval:pokemon-col-dropped
@@ -44,11 +44,6 @@ ALTER TABLE pokemon ADD power INT NULL;
 
 --changeset keval:foreign-key-added
 ALTER TABLE pokemon ADD CONSTRAINT pokemon_FK FOREIGN KEY (power) REFERENCES power(powerId);
-
---changeset keval:add-dummy-pokemon-to-table
-INSERT INTO pokemon (name,imageUrl,power)
-	VALUES ('Pikachu','pikachu.com',1);
-
 
 
 

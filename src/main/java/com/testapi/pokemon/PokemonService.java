@@ -36,8 +36,8 @@ public class PokemonService {
   }
 
   public Pokemon update(PokemonUpdateForm pokemon, Integer id) {
-    Optional<Pokemon> byName = pokemonRepository.findByName(pokemon.getName());
-    if (byName.isPresent()) {
+    Optional<Pokemon> byId = pokemonRepository.findById(id);
+    if (byId.isPresent()) {
       Power power = powerService.get(pokemon.getPower());
       Pokemon updatePokemon = new Pokemon();
       updatePokemon.setPower(power);
